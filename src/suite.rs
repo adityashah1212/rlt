@@ -45,7 +45,7 @@ pub trait StatelessBenchSuite {
 
 impl<T> BenchSuite for T
 where
-    T: StatelessBenchSuite + Send + Sync + 'static,
+    T: StatelessBenchSuite,
 {
     type WorkerState = ();
 

@@ -7,12 +7,9 @@
 //! # Overview
 //! [`Observer`] receives a reference to [`IterReport`] via [`BenchResult`]. It can handle the
 //! results as it sees fit. [`Observer`]s can also be chained by calling [`ObserverExt::with`]
-//! on any observer. This will call the newer observer first and then the original observer. This
-//! is also the mechanism used by [TuiCollector](crate::collector::TuiCollector) and
-//! [SilentCollector](crate::collector::SilentCollector) to collect and aggregate results.
+//! on any observer. This will call the newer observer first and then the original observer.
 use futures::channel::mpsc;
 use futures::future::OptionFuture;
-use tracing::warn;
 
 use crate::{BenchError, IterReport};
 
@@ -89,7 +86,7 @@ impl Observer for MpscObserver {
     async fn notify(&self, result: Result<&IterReport, &BenchError>) {
         let result = result.map(Clone::clone).map_err(ToString::to_string);
         if let Err(error) = self.0.unbounded_send(result) {
-            warn!(%error, "Failed to send IterReport");
+            log::warn!("Failed to send IterReport; error={error}");
         }
     }
 }

@@ -272,7 +272,7 @@ where
     baseline.as_ref().map(|b| b.validate(&opts)).transpose()?;
 
     let session = BenchSession::new(suite).opts(opts);
-    let report = if cli.quiet {
+    let report = if cli.quiet || !stdout().is_tty() {
         session.run().await
     } else {
         session.with_tui(TuiSettings { fps: cli.fps, auto_quit: !cli.quit_manually }).run().await

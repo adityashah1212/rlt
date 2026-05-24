@@ -19,7 +19,7 @@ impl StatelessBenchSuite for SimpleBench {
         let duration = t.elapsed();
 
         // simulate status code
-        let status = match info.worker_seq % 10 {
+        let status = match info.runner_seq % 10 {
             8..=9 => Status::server_error(500),
             6..=7 => Status::client_error(400),
             _ => Status::success(200),
